@@ -12,14 +12,19 @@ import { createUnsortedStateAdapter } from './unsorted_state_adapter';
 export function createSortedStateAdapter<T>(
   selectId: IdSelector<T>,
   sort: Comparer<T>
-): EntityStateAdapter<T> {
+): EntityStateAdapter<T>;
+export function createSortedStateAdapter<T>(
+  selectId: IdSelector<T>,
+  sort: any
+): any {
   type R = EntityState<T>;
 
   const { removeOne, removeMany, removeAll } = createUnsortedStateAdapter(
     selectId
   );
 
-  function addOneMutably(entity: T, state: R): boolean {
+  function addOneMutably(entity: T, state: R): boolean;
+  function addOneMutably(entity: T, state: any): boolean {
     const key = selectId(entity);
 
     if (key in state.entities) {
@@ -33,7 +38,8 @@ export function createSortedStateAdapter<T>(
     return true;
   }
 
-  function addManyMutably(newModels: T[], state: R): boolean {
+  function addManyMutably(newModels: T[], state: R): boolean;
+  function addManyMutably(newModels: T[], state: any): boolean {
     let didMutate = false;
 
     for (let index in newModels) {
@@ -43,7 +49,8 @@ export function createSortedStateAdapter<T>(
     return didMutate;
   }
 
-  function addAllMutably(models: T[], state: R): boolean {
+  function addAllMutably(models: T[], state: R): boolean;
+  function addAllMutably(models: T[], state: any): boolean {
     const sortedModels = models.sort(sort);
 
     state.entities = {};
@@ -56,7 +63,8 @@ export function createSortedStateAdapter<T>(
     return true;
   }
 
-  function updateOneMutably(update: Update<T>, state: R): boolean {
+  function updateOneMutably(update: Update<T>, state: R): boolean;
+  function updateOneMutably(update: Update<T>, state: any): boolean {
     if (!(update.id in state.entities)) {
       return false;
     }
@@ -91,7 +99,8 @@ export function createSortedStateAdapter<T>(
     return true;
   }
 
-  function updateManyMutably(updates: Update<T>[], state: R): boolean {
+  function updateManyMutably(updates: Update<T>[], state: R): boolean;
+  function updateManyMutably(updates: Update<T>[], state: any): boolean {
     let didMutate = false;
 
     for (let index in updates) {
@@ -101,7 +110,8 @@ export function createSortedStateAdapter<T>(
     return didMutate;
   }
 
-  function findTargetIndex(state: R, model: T) {
+  function findTargetIndex(state: R, model: T): number;
+  function findTargetIndex(state: any, model: T): number {
     if (state.ids.length === 0) {
       return 0;
     }

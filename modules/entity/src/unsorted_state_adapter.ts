@@ -3,10 +3,12 @@ import { createStateOperator } from './state_adapter';
 
 export function createUnsortedStateAdapter<T>(
   selectId: IdSelector<T>
-): EntityStateAdapter<T> {
+): EntityStateAdapter<T>;
+export function createUnsortedStateAdapter<T>(selectId: IdSelector<T>): any {
   type R = EntityState<T>;
 
-  function addOneMutably(entity: T, state: R): boolean {
+  function addOneMutably(entity: T, state: R): boolean;
+  function addOneMutably(entity: any, state: any): boolean {
     const key = selectId(entity);
 
     if (key in state.entities) {
@@ -19,7 +21,8 @@ export function createUnsortedStateAdapter<T>(
     return true;
   }
 
-  function addManyMutably(entities: T[], state: R): boolean {
+  function addManyMutably(entities: T[], state: R): boolean;
+  function addManyMutably(entities: any[], state: any): boolean {
     let didMutate = false;
 
     for (let index in entities) {
@@ -29,7 +32,8 @@ export function createUnsortedStateAdapter<T>(
     return didMutate;
   }
 
-  function addAllMutably(entities: T[], state: R): boolean {
+  function addAllMutably(entities: T[], state: R): boolean;
+  function addAllMutably(entities: any[], state: any): boolean {
     state.ids = [];
     state.entities = {};
 
@@ -38,7 +42,8 @@ export function createUnsortedStateAdapter<T>(
     return true;
   }
 
-  function removeOneMutably(key: string, state: R): boolean {
+  function removeOneMutably(key: T, state: R): boolean;
+  function removeOneMutably(key: any, state: any): boolean {
     const index = state.ids.indexOf(key);
 
     if (index === -1) {
@@ -51,7 +56,8 @@ export function createUnsortedStateAdapter<T>(
     return true;
   }
 
-  function removeManyMutably(keys: string[], state: R): boolean {
+  function removeManyMutably(keys: T[], state: R): boolean;
+  function removeManyMutably(keys: any[], state: any): boolean {
     let didMutate = false;
 
     for (let index in keys) {
@@ -61,14 +67,16 @@ export function createUnsortedStateAdapter<T>(
     return didMutate;
   }
 
-  function removeAll<S extends R>(state: S): S {
+  function removeAll<S extends R>(state: S): S;
+  function removeAll<S extends R>(state: any): S {
     return Object.assign({}, state, {
       ids: [],
       entities: {},
     });
   }
 
-  function updateOneMutably(update: Update<T>, state: R): boolean {
+  function updateOneMutably(update: Update<T>, state: R): boolean;
+  function updateOneMutably(update: any, state: any): boolean {
     const index = state.ids.indexOf(update.id);
 
     if (index === -1) {
